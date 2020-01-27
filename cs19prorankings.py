@@ -91,13 +91,6 @@ def parse_data(dset):
 def create_player_data_objs(parsed_set):
   return [Player_Data(player.split()[0], player.split()[1], player.split()[2]) for player in parsed_set]
 
-
-load_api_key("3D7DE697F2F2B5A7DB89B1AF65F5830C")
-
-parsedset = parse_data(dataset)
-
-player_data_objs = create_player_data_objs(parsedset)
-
 K_INDEX = 0
 D_INDEX = 1
 TIME_INDEX = 2
@@ -108,6 +101,16 @@ CENTER_POINT = 1.25
 
 #call load api key here
 
+parsedset = parse_data(dataset)
+player_data_objs = create_player_data_objs(parsedset)
+
+
+rating_list = np.array([float(x.rating) for x in player_data_objs])
+x = (rating_list - CENTER_POINT)
+y = np.zeros(len(rating_list))
+
+plt.scatter(x, y)
+plt.show()
 
 
 print(player_data_objs[0].json_data[K_INDEX])
