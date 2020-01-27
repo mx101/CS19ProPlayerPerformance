@@ -31,6 +31,13 @@ flusha 76561197991348083 1.07,
 JaCkz 76561197972242917 1.04
 """
 
+api_key = "no key"
+
+def load_api_key(key_number):
+  global api_key
+  api_key = key_number
+
+
 def build_csgo_url(api_key, player_id):
   baseurl = "http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/"
   csgo_appid = 730
@@ -57,7 +64,7 @@ def read_json(api_key, player_id):
     for line in rd.readlines():
       fd2.write(line)
   
-  return json.loads(data)
+  return json.loads(data)["playerstats"]["stats"][0:7]
 
 class Player_Data:
   def __init__ (self, name, player_id, rating):
@@ -85,21 +92,37 @@ def create_player_data_objs(parsed_set):
   return [Player_Data(player.split()[0], player.split()[1], player.split()[2]) for player in parsed_set]
 
 
+'''def extract_stat(idx_number, dset):
+  print(1)
+  stat_list = []
+
+  if (idx_number is K_INDEX):
+    for player_obj in dset:
+      #stat_list.append(player_obj.)
+      # get data from json and append in'''
+
+
+
 parsedset = parse_data(dataset)
 
 player_data_objs = create_player_data_objs(parsedset)
 
-#print(player_data_objs[0].rating)
+pIDList = [x.player_id for x in player_data_objs]
 
-api_key = "no key"
+print(pIDList)
 
-def load_api_key(key_number):
-  global api_key
-  api_key = key_number
+#call load api key here
+json_list = [read_json(api_key, x) for x in pIDList]
 
-# input API KEY using load_api_key(INPUT KEY HERE)
-# eligeDict = (read_json(api_key, "76561198066693739"))
-#print(eligeDict)
+print(json_list)
+print(len(json_list))
+
+print(json_list[0][2]['value'])
+
+print(player_data_objs[0].name)
+
+eligeDict = (read_json(api_key, "76561198066693739"))
+print(eligeDict)
 
 K_INDEX = 0
 D_INDEX = 1
