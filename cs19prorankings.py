@@ -16,8 +16,6 @@ import urllib.request
 # possible ideas for graphing: circle dot plot with darker colors for more hours played, distance from center is ranking
 # look into principal component analysis and dimensionality reduction, SCIKIT
 
-CENTER_POINT = 1.25
-
 dataset = """
 EliGE 76561198066693739 1.21,
 ropz 76561197991272318 1.19,
@@ -69,13 +67,15 @@ def read_json(api_key, player_id):
 class Player_Data:
   def __init__ (self, name, player_id, rating):
     print("Creating Player Data Object: " + name)
+    json_data = read_json(api_key, player_id)
     self.name = name
     self.player_id = player_id
+    self.json_data = json_data
     self.rating = rating
-    self.kills = 0
-    self.deaths = 0
-    self.time = 0
-    self.damage = 0
+    self.kills = json_data[0]
+    self.deaths = json_data[1]
+    self.time = json_data[2]
+    self.damage = json_data[6]
 
 # Michael = Player_Data("Michael", 76561198068252994, 0)
 
@@ -92,40 +92,24 @@ def create_player_data_objs(parsed_set):
   return [Player_Data(player.split()[0], player.split()[1], player.split()[2]) for player in parsed_set]
 
 
-'''def extract_stat(idx_number, dset):
-  print(1)
-  stat_list = []
-
-  if (idx_number is K_INDEX):
-    for player_obj in dset:
-      #stat_list.append(player_obj.)
-      # get data from json and append in'''
-
-
+load_api_key("3D7DE697F2F2B5A7DB89B1AF65F5830C")
 
 parsedset = parse_data(dataset)
 
 player_data_objs = create_player_data_objs(parsedset)
 
-pIDList = [x.player_id for x in player_data_objs]
-
-print(pIDList)
-
-#call load api key here
-json_list = [read_json(api_key, x) for x in pIDList]
-
-print(json_list)
-print(len(json_list))
-
-k_list = [x[0] for x in json_list]
-print(k_list)
-
-print(player_data_objs[0].name)
-
-eligeDict = (read_json(api_key, "76561198066693739"))
-print(eligeDict)
-
 K_INDEX = 0
 D_INDEX = 1
 TIME_INDEX = 2
 DAMAGE_INDEX = 6
+
+CENTER_POINT = 1.25
+
+
+#call load api key here
+
+
+
+print(player_data_objs[0].json_data[K_INDEX])
+print(player_data_objs[0].kills)
+print(player_data_objs[0].deaths)
