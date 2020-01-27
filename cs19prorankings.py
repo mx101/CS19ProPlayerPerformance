@@ -117,7 +117,8 @@ json_list = [read_json(api_key, x) for x in pIDList]
 print(json_list)
 print(len(json_list))
 
-print(json_list[0][2]['value'])
+k_list = [x[0] for x in json_list]
+print(k_list)
 
 print(player_data_objs[0].name)
 
